@@ -30,6 +30,7 @@ the chrome_elf.dll file should be on the side.
 
 ### Credits :
 Initially to [**master131**](https://github.com/master131), by the base project. 
+
 for the update [**SmoLL_iCe**](https://github.com/SmoLL-iCe)
 
 ### License
