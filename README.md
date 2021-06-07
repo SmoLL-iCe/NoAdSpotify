@@ -28,9 +28,6 @@ the chrome_elf.dll file should be on the side.
 #### Uninstallation:
 [Download](https://raw.githubusercontent.com/SmoLL-iCe/NoAdSpotify/main/Release/uninstaller.bat) and run uninstaller.bat.
 
-#### Uninstall:
-To uninstall, simply delete netutils.dll from your Spotify installation (see above for the location).
-
 ### Credits :
 Initially to [**master131**](https://github.com/master131), by the base project. 
 for the update [**SmoLL_iCe**](https://github.com/SmoLL-iCe)
