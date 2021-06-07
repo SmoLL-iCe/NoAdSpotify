@@ -24,9 +24,22 @@
 *.lai
 *.la
 *.a
-*.lib
 
 # Executables
 *.exe
 *.out
 *.app
+*.db
+*.db-shm
+*.db-wal
+*.opendb
+.vs/NoAdSpotify/v16/.suo
+*.ipch
+*.recipe
+*.iobj
+*.ipdb
+*.log
+*.tlog
+*.pdb
+*.exp
+Release/chrome_elf.lib
