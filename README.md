@@ -1,6 +1,8 @@
 # NoAdSpotify
  Block spotify ad
 
+ [![forthebadge](https://forthebadge.com/images/badges/made-with-c-sharp.svg)](https://forthebadge.com)
+
 ## This is an updated and simplified version of the project: 
 [BlockTheSpot](https://github.com/master131/BlockTheSpot)
 
@@ -32,3 +34,6 @@ To uninstall, simply delete netutils.dll from your Spotify installation (see abo
 ### Credits :
 Initially to [**master131**](https://github.com/master131), by the base project. 
 for the update [**SmoLL_iCe**](https://github.com/SmoLL-iCe)
+
+### License
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/SmoLL-iCe/NoAdSpotify/blob/main/LICENSE)
