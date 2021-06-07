@@ -153,7 +153,7 @@ void patch_skip_stuck_seconds( )
 
 void __stdcall main( )
 {
-	utils::open_console( );
+	//utils::open_console( );
 
 	version_t v;
 
