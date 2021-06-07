@@ -22,7 +22,7 @@
 ### Install/Uninstall:
 
 #### Installation:
-[Download](https://raw.githubusercontent.com/SmoLL-iCe/NoAdSpotify/main/Release/installer.bat) and chrome_elf.dll compiled, and run installer.bat.
+[Download](https://raw.githubusercontent.com/SmoLL-iCe/NoAdSpotify/main/Release/installer.bat) and [chrome_elf.dll](https://github.com/SmoLL-iCe/NoAdSpotify/raw/main/Release/chrome_elf.dll) compiled, and run installer.bat.
 the chrome_elf.dll file should be on the side. 
 
 #### Uninstallation:
