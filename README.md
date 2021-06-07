@@ -1,0 +1,2 @@
+# NoAdSpotify
+ Block spotify ad
