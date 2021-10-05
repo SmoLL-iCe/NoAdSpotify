@@ -121,18 +121,19 @@ int __fastcall now_playing_hook( char* p_this, void* edx, uintptr_t track )
 		}
 	}
 
-
 	return reinterpret_cast<decltype( now_playing_hook )*>( logger::instance( )->m_fn_now_playing )( p_this, edx, track );
 }
 
 
 void patch_ad_missing_id( )
 {
+	if ( !logger::instance( )->m_jne_ad_missing_id )
+		return;
 	DWORD p;
 
-	VirtualProtect( logger::instance( )->m_jne_ad_missing_id, 6, PAGE_EXECUTE_READWRITE, &p );
+	if ( VirtualProtect( logger::instance( )->m_jne_ad_missing_id, 6, PAGE_EXECUTE_READWRITE, &p ) )
 
-	memset( logger::instance( )->m_jne_ad_missing_id, 0x90, 6 );
+		memset( logger::instance( )->m_jne_ad_missing_id, 0x90, 6 );
 
 	VirtualProtect( logger::instance( )->m_jne_ad_missing_id, 6, p, &p );
 	
@@ -140,12 +141,13 @@ void patch_ad_missing_id( )
 
 void patch_skip_stuck_seconds( )
 {
-
+	if ( !logger::instance( )->m_mov_skip_stuck_seconds )
+		return;
 	DWORD p;
 
-	VirtualProtect( logger::instance( )->m_mov_skip_stuck_seconds, 6, PAGE_EXECUTE_READWRITE, &p );
+	if ( VirtualProtect( logger::instance( )->m_mov_skip_stuck_seconds, 6, PAGE_EXECUTE_READWRITE, &p ) )
 
-	*reinterpret_cast<DWORD*>( logger::instance( )->m_mov_skip_stuck_seconds ) = 0;
+		*reinterpret_cast<DWORD*>( logger::instance( )->m_mov_skip_stuck_seconds ) = 0;
 
 	VirtualProtect( logger::instance( )->m_mov_skip_stuck_seconds, 6, p, &p );
 	
@@ -165,18 +167,20 @@ void __stdcall main( )
 		return;
 	}
 
-	if ( !logger::instance( )->valid_ptrs( ) )
-	{
-		MessageBoxA( nullptr, "logger fail", "problem", 0 );
-		return;
-	}
+	//if ( !logger::instance( )->valid_ptrs( ) )
+	//{
+	//	MessageBoxA( nullptr, "logger fail", "problem", 0 );
+	//	return;
+	//}
 	
+	if ( logger::instance( )->m_fn_require_focus )
+		hk::apply_detour( can_focus_hook, logger::instance( )->m_fn_require_focus );
 
-	hk::apply_detour( can_focus_hook, logger::instance( )->m_fn_require_focus );
+	if ( logger::instance( )->m_fn_now_playing )
+		hk::apply_detour( now_playing_hook, logger::instance( )->m_fn_now_playing );
 
-	hk::apply_detour( now_playing_hook, logger::instance( )->m_fn_now_playing );
-
-	hk::apply_detour( is_skippable_hook, logger::instance( )->m_fn_is_skippable );
+	if ( logger::instance( )->m_fn_is_skippable )
+		hk::apply_detour( is_skippable_hook, logger::instance( )->m_fn_is_skippable );
 
 	patch_skip_stuck_seconds( );
 

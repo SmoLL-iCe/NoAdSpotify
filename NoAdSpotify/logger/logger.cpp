@@ -14,30 +14,44 @@ logger::logger( )
 	{
 		for ( size_t i = 0; i < 0x1000; ++i )
 		{
-			if ( *reinterpret_cast<uint32_t*>( ptr - i ) == 0x6AEC8B55 ) return ptr - i;
+			auto pp = *reinterpret_cast<uint32_t*>( ptr - i );
+			if ( pp == 0x6AEC8B55 ||
+				pp == 0x15B83C6A ||
+				pp == 0xA7B8406A
+				) return ptr - i;
 		}
 
 		return nullptr;
 	};
 
-	m_jne_ad_missing_id			= mem::pattern_scan( main, 0, "0F 85 ?? ?? ?? ?? A1 ?? ?? ?? ?? F3 0F 7E 05 ?? ?? ?? ?? 89 45 E0 A0" );
+	m_jne_ad_missing_id			= mem::pattern_scan( main, 0, "0F 85 ? ? ? ? 33 C0 C7 45 ? ? ? ? ? 6A 0D" );
+	//m_jne_ad_missing_id			= mem::pattern_scan( main, 0, "0F 85 ?? ?? ?? ?? A1 ?? ?? ?? ?? F3 0F 7E 05 ?? ?? ?? ?? 89 45 E0 A0" );
 
 	m_mov_skip_stuck_seconds	= mem::pattern_scan( main, 0, "B9 E8 03 00 00 F7 E9 83" );
 
-	m_fn_is_skippable			= mem::pattern_scan( main, 0, "83 C4 10 BB ? ? ? ? 83 78 14 10" );
+	m_fn_is_skippable			= mem::pattern_scan( main, 0, "73 6B 69 70 70 61 62 6C 65 00 00 00 00 00 00 00" );
 
-	m_fn_now_playing			= mem::pattern_scan( main, 0, "8B C1 89 85 ? ? ? ? 8B 55 08 C7 85" );
+	//m_fn_now_playing			= mem::pattern_scan( main, 0, "8B C1 89 85 ? ? ? ? 8B 55 08 C7 85" );
+	m_fn_now_playing			= mem::pattern_scan( main, 0, "68 ? ? ? ? B8 ? ? ? ? E8 ? ? ? ? 8B C1 89 85 ? ? ? ? 8B 7D 08" );
 
 	m_fn_require_focus			= mem::pattern_scan( main, 0, "72 65 71 75 69 72 65 5F 66 6F 63 75 73 00 00 00 0D" );
 
-	if ( m_fn_is_skippable )
-		m_fn_is_skippable		= get_function_start( m_fn_is_skippable );
-
-	if ( m_fn_now_playing )
-		m_fn_now_playing		= get_function_start( m_fn_now_playing );
 
 	if ( m_mov_skip_stuck_seconds )
 		m_mov_skip_stuck_seconds += 1;
+
+	//printf( "first m_jne_ad_missing_id 0x%p\n", m_jne_ad_missing_id );
+	//printf( "first m_mov_skip_stuck_seconds 0x%p\n", m_mov_skip_stuck_seconds );
+	//printf( "first m_fn_is_skippable 0x%p\n", m_fn_is_skippable );
+	//printf( "first m_fn_now_playing 0x%p\n", m_fn_now_playing );
+	//printf( "first m_fn_require_focus 0x%p\n", m_fn_require_focus );
+	//printf( "\n" );
+
+	//if ( m_fn_is_skippable )
+	//	m_fn_is_skippable		= get_function_start( m_fn_is_skippable );
+
+	//if ( m_fn_now_playing )
+	//	m_fn_now_playing		= get_function_start( m_fn_now_playing );
 
 	if ( m_fn_require_focus )
 	{
@@ -50,14 +64,36 @@ logger::logger( )
 		m_fn_require_focus = mem::find_pattern( main, mem::get_mod_size( main ), pattern, 5 );
 	}
 
+	if ( m_fn_is_skippable )
+	{
+		auto pattern = new uint8_t[ 5 ];
+
+		pattern[ 0 ] = 0x68;
+
+		*reinterpret_cast<uint8_t**>( &pattern[ 1 ] ) = m_fn_is_skippable;
+
+		m_fn_is_skippable = mem::find_pattern( main, mem::get_mod_size( main ), pattern, 5 );
+
+
+	}
+
+	//printf( "second m_fn_is_skippable 0x%p\n", m_fn_is_skippable );
+	//printf( "second m_fn_require_focus 0x%p\n", m_fn_require_focus );
+	//printf( "\n" );
+
 	if ( m_fn_require_focus )
 		m_fn_require_focus = get_function_start( m_fn_require_focus );
 
+	if ( m_fn_is_skippable )
+		m_fn_is_skippable = get_function_start( m_fn_is_skippable );
+	
+
 	//printf( "m_jne_ad_missing_id 0x%p\n", m_jne_ad_missing_id );
-	//printf( "m_mov_skipStuckSeconds 0x%p\n", m_mov_skipStuckSeconds );
+	//printf( "m_mov_skip_stuck_seconds 0x%p\n", m_mov_skip_stuck_seconds );
 	//printf( "m_fn_is_skippable 0x%p\n", m_fn_is_skippable );
 	//printf( "m_fn_now_playing 0x%p\n", m_fn_now_playing );
 	//printf( "m_fn_require_focus 0x%p\n", m_fn_require_focus );
+	
 
 }
 
